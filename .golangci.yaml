@@ -1,0 +1,37 @@
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - dogsled
+    - dupl
+    - decorder
+    - errcheck
+    - forbidigo
+    - funlen
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - gocyclo
+    - gofmt
+    - gomodguard
+    - revive
+    - gosec
+    - gosimple
+    - govet
+    - godot
+    - ineffassign
+    - misspell
+    - nakedret
+    - nolintlint
+    - copyloopvar
+    - prealloc
+    - staticcheck
+    - stylecheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
+
+  presets:
+    - comment

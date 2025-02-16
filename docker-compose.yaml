@@ -1,0 +1,35 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_HOST: db
+            POSTGRES_PORT: ${POSTGRES_PORT}
+        ports:
+            - "8080:8080"
+        command: ./main
+        depends_on:
+            - db
+
+    db:
+        image: postgres:17
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        ports:
+            - "5432:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U exampleuser"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+
+volumes:
+    pgdata:
