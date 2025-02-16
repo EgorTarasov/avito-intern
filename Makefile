@@ -37,7 +37,7 @@ endif
 # run diff lint like in pipeline
 .PHONY: .lint
 .lint: install-lint
-	$(info Running lint...
+	$(info Running lint...)
 	$(GOLANGCI_BIN) run --new-from-rev=origin/main --config=.golangci.yaml ./...
 
 # golangci-lint diff main
