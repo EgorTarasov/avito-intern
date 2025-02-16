@@ -1,5 +1,5 @@
 LOCAL_BIN:=$(CURDIR)/bin
-
+MIGRATION_DIR=$(CURDIR)/internal/migrations
 GOLANGCI_BIN:=$(LOCAL_BIN)/golangci-lint
 GOLANGCI_TAG:=1.62.2
 MOCKGEN_TAG:=latest
@@ -8,7 +8,11 @@ SMART_IMPORTS := ${LOCAL_BIN}/smartimports
 # run in docker
 .PHONY: docker
 docker:
-	godotenv -f ./bin/dev.env docker-compose up --build -d
+	docker-compose up --build -d
+
+.PHONY: docker-build
+docker-build:
+	godotenv -f ./bin/dev.env docker-compose build
 
 # build app
 .PHONY: build
@@ -72,6 +76,6 @@ migration-create:
 		echo "Usage: make migration-create NAME=your_migration_name"; \
 		exit 1; \
 	fi
-	goose -dir migrations create $(NAME) sql
+	goose -dir ${MIGRATION_DIR} create $(NAME) sql
 
 

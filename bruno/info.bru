@@ -1,0 +1,19 @@
+meta {
+  name: info
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/api/info
+  body: none
+  auth: bearer
+}
+
+headers {
+  accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}

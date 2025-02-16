@@ -18,10 +18,11 @@ func NewUserID(userID int64) (UserID, error) {
 
 // User — представление пользователя в системе.
 type User struct {
-	ID        UserID
-	Username  string
-	Password  string
-	CreatedAt time.Time
+	ID          UserID
+	Username    string
+	Password    string
+	CoinBalance int
+	CreatedAt   time.Time
 }
 
 // Claims определяет наши собственные JWT claims, включая идентификатор пользователя.

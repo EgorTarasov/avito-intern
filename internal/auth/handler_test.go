@@ -32,6 +32,11 @@ func (f *fakeService) GetUserFromToken(ctx context.Context, token Token) (*User,
 	return nil, nil
 }
 
+func (f *fakeService) GetUserByUsername(_ context.Context, _ string) (*User, error) {
+	// Return a dummy user or nil as needed by tests.
+	return nil, nil
+}
+
 // setupTestHandler initializes a Fiber app with our auth handler.
 func setupTestHandler(svc *fakeService) *fiber.App {
 	app := fiber.New()

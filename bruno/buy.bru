@@ -1,0 +1,23 @@
+meta {
+  name: buy
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{host}}/api/buy/:item
+  body: none
+  auth: bearer
+}
+
+params:path {
+  item: t-shirt
+}
+
+headers {
+  accept: */*
+}
+
+auth:bearer {
+  token: {{token}}
+}

@@ -8,9 +8,23 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+type userKey struct{}
+
+func SetUser(ctx context.Context, user *User) context.Context {
+	return context.WithValue(ctx, userKey{}, user)
+}
+
+func GetUser(ctx context.Context) (*User, bool) {
+	if u, ok := ctx.Value(userKey{}).(*User); ok {
+		return u, true
+	}
+	return nil, false
+}
+
 type Service interface {
 	AuthUser(ctx context.Context, username, password string) (Token, error)
 	GetUserFromToken(ctx context.Context, rawToken Token) (*User, error)
+	GetUserByUsername(ctx context.Context, username string) (*User, error)
 }
 
 type Handlers struct {
@@ -83,6 +97,7 @@ func (h *Handlers) auth(c *fiber.Ctx) error {
 
 // verify middleware.
 func (h *Handlers) Verify(c *fiber.Ctx) error {
+	ctx := context.Background()
 	authHeader := c.Get("Authorization")
 	if authHeader == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -106,6 +121,7 @@ func (h *Handlers) Verify(c *fiber.Ctx) error {
 			"errors": "Пользователь не прошел проверку",
 		})
 	}
-
+	ctx = SetUser(ctx, user)
+	c.SetUserContext(ctx)
 	return c.Next()
 }

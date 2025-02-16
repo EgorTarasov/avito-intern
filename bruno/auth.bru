@@ -1,0 +1,25 @@
+meta {
+  name: auth
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/auth
+  body: json
+  auth: none
+}
+
+headers {
+  accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  { "username": "hello1", "password": "world1" }
+}
+
+script:post-response {
+  let data = res.getBody();
+  bru.setEnvVar("token",data.token);
+}

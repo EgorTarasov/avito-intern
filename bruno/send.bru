@@ -1,0 +1,27 @@
+meta {
+  name: send
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api/sendCoin
+  body: json
+  auth: bearer
+}
+
+headers {
+  accept: */*
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  { 
+    "toUser": "hello2", 
+    "amount": 500
+  }
+}

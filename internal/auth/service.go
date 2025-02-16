@@ -45,7 +45,7 @@ func (s *service) AuthUser(ctx context.Context, username, password string) (Toke
 			return "", NewErrInternal(errCreate)
 		}
 
-		user, errCreate = s.users.CreateUser(ctx, username, hashed)
+		user, errCreate = s.users.CreateUser(ctx, username, hashed, 1000)
 		if errCreate != nil {
 			return "", NewErrInternal(errCreate)
 		}
@@ -68,4 +68,8 @@ func (s *service) GetUserFromToken(ctx context.Context, rawToken Token) (*User, 
 		return nil, ErrUnauthorized
 	}
 	return u, nil
+}
+
+func (s *service) GetUserByUsername(ctx context.Context, username string) (*User, error) {
+	return s.users.GetUserByUsername(ctx, username)
 }

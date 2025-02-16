@@ -15,7 +15,7 @@ import (
 // fakeUserRepo implements the UserRepo interface.
 type fakeUserRepo struct {
 	getUserByUsernameFunc func(ctx context.Context, username string) (*User, error)
-	createUserFunc        func(ctx context.Context, username, password string) (*User, error)
+	createUserFunc        func(ctx context.Context, username, password string, coins int) (*User, error)
 	getUserByIDFunc       func(ctx context.Context, userID UserID) (*User, error)
 }
 
@@ -26,9 +26,9 @@ func (f *fakeUserRepo) GetUserByUsername(ctx context.Context, username string) (
 	return nil, ErrUserNotFound
 }
 
-func (f *fakeUserRepo) CreateUser(ctx context.Context, username, password string) (*User, error) {
+func (f *fakeUserRepo) CreateUser(ctx context.Context, username, password string, coins int) (*User, error) {
 	if f.createUserFunc != nil {
-		return f.createUserFunc(ctx, username, password)
+		return f.createUserFunc(ctx, username, password, coins)
 	}
 	return nil, errors.New("not implemented")
 }
@@ -125,11 +125,11 @@ func TestAuthUser_UserNotFound_CreateUserSuccess(t *testing.T) {
 			// Simulate user not found.
 			return nil, ErrUserNotFound
 		},
-		createUserFunc: func(_ context.Context, username, password string) (*User, error) {
+		createUserFunc: func(_ context.Context, username, password string, coins int) (*User, error) {
 			hashed, err := hashPassword(password)
 			require.NoError(t, err)
 			// Simulate successful user creation.
-			return &User{ID: 3, Username: username, Password: hashed}, nil
+			return &User{ID: 3, Username: username, Password: hashed, CoinBalance: coins}, nil
 		},
 	}
 
@@ -152,7 +152,7 @@ func TestAuthUser_CreateUserFailure(t *testing.T) {
 		getUserByUsernameFunc: func(_ context.Context, _ string) (*User, error) {
 			return nil, ErrUserNotFound
 		},
-		createUserFunc: func(_ context.Context, _, _ string) (*User, error) {
+		createUserFunc: func(_ context.Context, _, _ string, _ int) (*User, error) {
 			return nil, errors.New("failed to create user")
 		},
 	}
