@@ -102,7 +102,7 @@ func TestTransfer_MissingUsers(t *testing.T) {
 	tx, err := svc.Transfer(context.Background(), nil, nil, 50)
 	assert.Error(t, err)
 	assert.Nil(t, tx)
-	assert.Contains(t, err.Error(), "mossing required data")
+	assert.Contains(t, err.Error(), "missing required data")
 }
 
 func TestPurchase_Success(t *testing.T) {
